@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
-from .database import Base
+from database import Base
 
 
 class Partner(Base):
@@ -14,10 +14,9 @@ class Partner(Base):
     hostidssl = Column(String(30))
 
 
-    def __init__(self, id, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
-        self.id = id
+    def __init__(self, site=1, partner_type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
         self.site = site
-        self.type = type
+        self.type = partner_type
         self.isClient = isClient
         self.isServer = isServer
         self.description = description
@@ -35,8 +34,7 @@ class Site(Base):
     description = Column(String(20))
 
 
-    def __init__(self, id, name='', description='', ):
-        self.id = id
+    def __init__(self, name='', description='', ):
         self.name = name
         self.description = description
 
@@ -47,24 +45,23 @@ class Site(Base):
 class Flow(Base):
     __tablename__ = 'flows'
     id = Column(Integer, primary_key=True)
-    name = Column(String(20))
+    name = Column(String(50))
     active = Column(Boolean())
     template = Column(Integer)
     origin = Column(Integer)
-    originDir = Column(String(40))
+    origindir = Column(String(40))
     # Destination ? 
     description = Column(String(20))
     filewatcher = Column(Boolean())
 
 
 
-    def __init__(self, id, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
-        self.id = id
+    def __init__(self, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
         self.name = name
         self.active = active
         self.template = template
         self.origin = origin
-        self.originDir = originDir
+        self.origindir = originDir
         self.description = description
         self.filewatcher = filewatcher
 
@@ -77,8 +74,7 @@ class FlowTemplate(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(20))
 
-    def __init__(self, id, name='' ):
-        self.id = id
+    def __init__(self, name='' ):
         self.name = name
 
     def __repr__(self):
@@ -97,8 +93,7 @@ class PartnerRequest(Base):
     hostidssl = Column(String(30))
 
 
-    def __init__(self, id, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
-        self.id = id
+    def __init__(self, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
         self.site = site
         self.type = type
         self.isClient = isClient
@@ -137,4 +132,4 @@ class FlowRequest(Base):
         self.filewatcher = filewatcher
 
     def __repr__(self):
-        return f'<FlowRequest {self.name!r}>'        
+        return f'<FlowRequest {self.name!r}>'
