@@ -1,0 +1,2 @@
+waarp == 0.0.7 \
+ --hash=sha256:ab2048edc42743deb22d1d69728a52a3a2d930d2a48dc3c93d27e2cfdb4ee36d
