@@ -1,10 +1,35 @@
+
 {% extends 'layout.html' %}
 
 {% block body %}
 <div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
+    <h1 class="display-4">Requests</h1>
+    <hr class="my-4">
+    <p class="lead">Flow Request List</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Active</th>
+          <th scope="col">Description</th>
+          <th scope="col">Origin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in flow_requests %}
+        <tr>
+          <th scope="row">{{ flow.waarp_id }}</th>
+          <td>{{ flow.name }}</td>
+          <td>{% if flow.active %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
+          <td>{{ flow.description }}</td>
+          <td><a href="/partner/{{ flow.origin }}" >[{{ flow.origin }}] {{ partners[flow.origin].hostid }}</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <hr class="my-4">
+    <p class="lead">Partner Request List</p>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -17,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for partner in partners %}
+        {% for partner in partner_requests %}
         <tr>
           <th scope="row">{{ partner.waarp_id }}</th>
           <td>{{ partner.hostid }}</td>
@@ -29,7 +54,6 @@
       {% endfor %}
       </tbody>
     </table>
-
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>

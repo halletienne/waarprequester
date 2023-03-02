@@ -2,9 +2,14 @@
 
 {% block body %}
 <div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
+    <h1 class="display-4">Partner</h1>
+    <hr class="my-4">
+    <p class="lead">Partner Detail</p>
+    <p>Hostname: {{ partner.hostid }}</p>
+    <p>Site: {{ partner.site }}</p>
+    <p>Type: {{ partner.type }}</p>
+    <hr class="my-4">
+    <p class="lead">Flow coming from this host</p>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -12,7 +17,6 @@
           <th scope="col">Name</th>
           <th scope="col">Active</th>
           <th scope="col">Description</th>
-          <th scope="col">Origin</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +26,6 @@
           <td>{{ flow.name }}</td>
           <td>{% if flow.active %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
           <td>{{ flow.description }}</td>
-          <td><a href="/partner/{{ flow.origin }}" >[{{ flow.origin }}] {{ partners[flow.origin].hostid }}</a></td>
         </tr>
       {% endfor %}
       </tbody>
