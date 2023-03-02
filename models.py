@@ -108,7 +108,7 @@ class PartnerRequest(Base):
         self.hostidssl = hostidssl
 
     def __repr__(self):
-        return f'<Partner {self.hostid!r}>'
+        return f'<PartnerRequest {self.hostid!r}>'
 
 
 
