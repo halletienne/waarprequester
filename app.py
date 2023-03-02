@@ -16,7 +16,7 @@ app_data = {
 
 @app.route("/")
 def hello_world():
-        return "<p>Hello, World!</p>"
+        return render_template("index.html",app_data=app_data)
     
 
 @app.route("/flows")
