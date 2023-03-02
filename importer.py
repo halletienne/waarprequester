@@ -16,7 +16,7 @@ import logging
 
 logging.getLogger().setLevel(logging.ERROR)
 
-engine = create_engine('sqlite:////tmp/test.db')
+engine = create_engine('sqlite:////tmp/test_new.db')
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -73,10 +73,10 @@ def populate_db(db_session, waarp):
         print("%s %s %s %s %s %s %s "%(flow.name, flow['active'], flow['template'], flow['origin'], flow['originDir'], flow['description'], flow['filewatcher']))
         #f = Flow(flow.name, flow['active'] )
         #f = Flow()
-        f = Flow(flow.name, flow.active, flow.template, flow.origin, flow.originDir, flow.description, flow.filewatcher)
-#        db_session.add(f)
+        f = Flow(flow.id, flow.name, flow.active, flow.template, flow.origin, flow.originDir, flow.description, flow.filewatcher)
+        db_session.add(f)
 
-#    db_session.commit()
+    db_session.commit()
 
     waarp.partner_inventory()
     for partner_name in waarp.partners:
@@ -86,7 +86,7 @@ def populate_db(db_session, waarp):
         #print("%s %s %s %s %s %s %s "%(partner.name, partner['active'], partner['template'], partner['origin'], partner['originDir'], partner['description'], partner['filewatcher']))
         #f = Flow(flow.name, flow['active'] )
         #f = Flow()
-        p = Partner(partner.site, partner.type, partner.isClient, partner.isServer, partner.description, partner.hostid, partner.hostidssl)
+        p = Partner(partner.id, partner.site, partner.type, partner.isClient, partner.isServer, partner.description, partner.hostid, partner.hostidssl)
         db_session.add(p)
     db_session.commit()
 
@@ -98,7 +98,7 @@ def populate_db(db_session, waarp):
         #print("%s %s %s %s %s %s %s "%(partner.name, partner['active'], partner['template'], partner['origin'], partner['originDir'], partner['description'], partner['filewatcher']))
         #f = Flow(flow.name, flow['active'] )
         #f = Flow()
-        s = Site(site.name, site.description)
+        s = Site(site.id, site.name, site.description)
         db_session.add(s)
     db_session.commit()
     ##waarp.template_inventory()
@@ -106,7 +106,7 @@ def populate_db(db_session, waarp):
         print('s name is '+str(type(template_name)))
         print(waarp.templates[template_name])
         template = waarp.templates[template_name]
-        t = FlowTemplate(template.name)
+        t = FlowTemplate(template.id, template.name)
         db_session.add(t)
     db_session.commit()
 

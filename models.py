@@ -4,7 +4,7 @@ from database import Base
 
 class Partner(Base):
     __tablename__ = 'partners'
-    id = Column(Integer, primary_key=True)
+    waarp_id = Column(Integer, primary_key=True)
     site = Column(Integer)
     type = Column(String(10))
     isClient = Column(Boolean())
@@ -14,7 +14,8 @@ class Partner(Base):
     hostidssl = Column(String(30))
 
 
-    def __init__(self, site=1, partner_type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
+    def __init__(self, waarp_id, site=1, partner_type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
+        self.waarp_id = waarp_id
         self.site = site
         self.type = partner_type
         self.isClient = isClient
@@ -29,12 +30,13 @@ class Partner(Base):
 
 class Site(Base):
     __tablename__ = 'sites'
-    id = Column(Integer, primary_key=True)
+    waarp_id = Column(Integer, primary_key=True)
     name = Column(String(10))
     description = Column(String(20))
 
 
-    def __init__(self, name='', description='', ):
+    def __init__(self, waarp_id, name='', description='', ):
+        self.waarp_id = waarp_id
         self.name = name
         self.description = description
 
@@ -44,7 +46,7 @@ class Site(Base):
 
 class Flow(Base):
     __tablename__ = 'flows'
-    id = Column(Integer, primary_key=True)
+    waarp_id = Column(Integer, primary_key=True)
     name = Column(String(50))
     active = Column(Boolean())
     template = Column(Integer)
@@ -56,7 +58,8 @@ class Flow(Base):
 
 
 
-    def __init__(self, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
+    def __init__(self, waarp_id, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
+        self.waarp_id = waarp_id
         self.name = name
         self.active = active
         self.template = template
@@ -71,10 +74,11 @@ class Flow(Base):
 
 class FlowTemplate(Base):
     __tablename__ = 'flowtemplates'
-    id = Column(Integer, primary_key=True)
+    waarp_id = Column(Integer, primary_key=True)
     name = Column(String(20))
 
-    def __init__(self, name='' ):
+    def __init__(self, waarp_id, name='' ):
+        self.waarp_id = waarp_id
         self.name = name
 
     def __repr__(self):
@@ -121,8 +125,7 @@ class FlowRequest(Base):
 
 
 
-    def __init__(self, id, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
-        self.id = id
+    def __init__(self, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
         self.name = name
         self.active = active
         self.template = template
