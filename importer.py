@@ -3,7 +3,7 @@
 
 from waarp import WaarpHelper
 import os
-import configParser
+import configparser
 
 
 ## Real start of function
