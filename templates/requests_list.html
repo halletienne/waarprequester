@@ -4,8 +4,17 @@
 {% block body %}
 <div class="jumbotron">
     <h1 class="display-4">Requests</h1>
+    <p>Global list of current requests</p>
+    <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Create Request</button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/flow_request_form">Request flow</a></li>
+        <li><a class="dropdown-item" href="/partner_request_form">Request Partner</a></li>
+      </ul>
+    </div>
     <hr class="my-4">
     <p class="lead">Flow Request List</p>
+    <a class="btn btn-outline-secondary" href="/flow_request_form" role="button">Request Flow</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -18,18 +27,20 @@
       </thead>
       <tbody>
         {% for flow in flow_requests %}
-        <tr>
-          <th scope="row">{{ flow.waarp_id }}</th>
+        <tr onclick="window.location='/flow_request_detail/{{ flow.request_id }}'">
+          <th scope="row">{{ flow.request_id }}</th>
           <td>{{ flow.name }}</td>
           <td>{% if flow.active %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
           <td>{{ flow.description }}</td>
-          <td><a href="/partner/{{ flow.origin }}" >[{{ flow.origin }}] {{ partners[flow.origin].hostid }}</a></td>
+      <!--<td>{% if partners[flow.origin] is defined %}<a href="/partner/{{ flow.origin }}" >[{{ flow.origin }}] {{ partners[flow.origin].hostid }}{% else %}Partner not existing{% endif %}</a></td> -->
+      <td>Not Implemented YET!</td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
     <hr class="my-4">
     <p class="lead">Partner Request List</p>
+    <a class="btn btn-outline-secondary" href="/partner_request_form" role="button">Request Partner</a>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -43,8 +54,8 @@
       </thead>
       <tbody>
         {% for partner in partner_requests %}
-        <tr>
-          <th scope="row">{{ partner.waarp_id }}</th>
+        <tr onclick="window.location='/partner_request_detail/{{ partner.request_id }}'">
+        <th scope="row">{{ partner.request_id }}</th>
           <td>{{ partner.hostid }}</td>
           <td>{{ partner.type }}</td>
           <td>{% if partner.isClient %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
