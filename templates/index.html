@@ -2,10 +2,29 @@
 
 {% block body %}
 <div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
-
+    <h1 class="display-4">Waarp Requests Status</h1>
+    <p class="lead">Here are the current waarp status</p>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Actual</th>
+          <th scope="col">Requested</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Partners</th>
+          <td>{{ partner_count }}</td>
+          <td>{{ partner_request_count }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Flows</th>
+          <td>{{ flow_count }}</td>
+          <td>{{ flow_request_count }}</td>
+        </tr>
+      </tbody>
+    </table>
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>
