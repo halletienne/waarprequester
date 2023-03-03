@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">Partner Request</h1>
+    {% if partner_requested is defined %} 
+    <p class="lead">You requested:</p>
+    <p>
+    hostid: {{ partner_requested['hostid'] }} <br />
+    hostidssl: {{ partner_requested['hostidssl'] }} <br />
+    type: {{ partner_requested['type'] }} <br />
+    isClient: {{ partner_requested['isClient'] }} <br />
+    isServer: {{ partner_requested['isServer'] }} <br />
+    description: {{ partner_requested['description'] }} <br />
+    site: {{ partner_requested['site'] }} <br />
+    </p>
+    {% endif %}
+    <hr class="my-4">
+    <form action="/partner_request_form" method="post">
+      <div class="mb-3">
+        <label for="hostidInput" class="form-label">hostId</label>
+        <input type="text" class="form-control" name="hostid" id="hostidInput">
+      </div>
+      <div class="mb-3">
+        <label for="hostidsslInput" class="form-label">hostIdSSL</label>
+        <input type="text" class="form-control" name="hostidssl" id="hostidsslInput">
+      </div>
+      <div class="mb-3">
+        <label for="siteInput" class="form-label">Site</label>
+        <select class="form-select form-select-sm" name="site" aria-label=".form-select-sm example">
+          <option selected>Select site</option>
+          {% for site in site_results %}
+          <option value="{{ site.waarp_id }}">{{ site.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="typeInput" class="form-label">Type</label>
+        <select class="form-select form-select-sm" name="type" aria-label=".form-select-sm example">
+          <option selected>Select Partner Type</option>
+          <option value="r66">Waarp R66</option>
+          <option value="sftp">SFTP</option>
+        </select>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="isClientCheck" name="isClient">
+        <label class="form-check-label" for="isClientCheck">isClient</label>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="isServerCheck" name="isServer">
+        <label class="form-check-label" for="isServerCheck">isServer</label>
+      </div>
+      <div class="mb-3">
+        <label for="descriptionPartner" class="form-label">Description</label>
+        <textarea class="form-control" id="descriptionPartner" rows="3" name="description"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form> 
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>
+  </div>
+{% endblock %}

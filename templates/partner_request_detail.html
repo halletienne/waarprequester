@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">Partner Request #{{ partnerrequest.request_id }}</h1>
+    <p>Site: {{ partnerrequest.site }} <br/>
+Type: {{ partnerrequest.type }} <br/>
+hostid: {{ partnerrequest.hostid }} <br/>
+hostidssl: {{ partnerrequest.hostidssl }} <br/>
+isClient: {{ partnerrequest.isClient }} <br/>
+isServer: {{ partnerrequest.isServer }} <br/>
+Description: {{ partnerrequest.description }} <br/>
+    </p>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>
+  </div>
+{% endblock %}
