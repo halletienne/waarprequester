@@ -43,6 +43,20 @@ class Site(Base):
     def __repr__(self):
         return f'<Site {self.name!r}>'
 
+class Destination(Base):
+    __tablename__ = 'destinations'
+    id = Column(Integer, primary_key=True)
+    hostid = Column(Integer)
+    path = Column(String(200))
+    flow_id = Column(Integer)
+
+
+    def __init__(self, hostid=1, path='', ):
+        self.hostid = hostid
+        self.path = path
+
+    def __repr__(self):
+        return f'<Destination {self.path!r}>'
 
 class Flow(Base):
     __tablename__ = 'flows'
@@ -93,11 +107,13 @@ class PartnerRequest(Base):
     isClient = Column(Boolean())
     isServer = Column(Boolean())
     description = Column(String(20))
+    status = Column(String(20))
+    additionalInformation = Column(String(400))
     hostid = Column(String(30))
     hostidssl = Column(String(30))
 
 
-    def __init__(self, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
+    def __init__(self, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl='', status='created', additionalInformation='', ):
         self.site = site
         self.type = type
         self.isClient = isClient
@@ -105,6 +121,8 @@ class PartnerRequest(Base):
         self.description = description
         self.hostid = hostid
         self.hostidssl = hostidssl
+        self.status = status
+        self.additionalInformation = additionalInformation
 
     def __repr__(self):
         return f'<PartnerRequest {self.hostid!r}>'
@@ -119,20 +137,38 @@ class FlowRequest(Base):
     template = Column(Integer)
     origin = Column(Integer)
     originDir = Column(String(40))
-    # Destination ? 
     description = Column(String(20))
+    status = Column(String(20))
+    additionalInformation = Column(String(400))
     filewatcher = Column(Boolean())
 
 
 
-    def __init__(self, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True):
+    def __init__(self, name='', active=True, template=3, origin=0, originDir='', description='', filewatcher=True, status='created', additionalInformation=''):
         self.name = name
         self.active = active
         self.template = template
         self.origin = origin
         self.originDir = originDir
         self.description = description
+        self.status = status
+        self.additionalInformation = additionalInformation
         self.filewatcher = filewatcher
 
     def __repr__(self):
         return f'<FlowRequest {self.name!r}>'
+
+class DestinationRequested(Base):
+    __tablename__ = 'destinations_requested'
+    id = Column(Integer, primary_key=True)
+    hostid = Column(Integer)
+    path = Column(String(200))
+    flow_id = Column(Integer)
+
+
+    def __init__(self, hostid=1, path='', ):
+        self.hostid = hostid
+        self.path = path
+
+    def __repr__(self):
+        return f'<Destination {self.path!r}>'
