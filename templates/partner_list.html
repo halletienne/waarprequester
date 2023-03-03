@@ -2,9 +2,8 @@
 
 {% block body %}
 <div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
+    <h1 class="display-4">Partners from Waarp Gateway</h1>
+    <p class="lead">Current partner list</p>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -18,7 +17,7 @@
       </thead>
       <tbody>
         {% for partner in partners %}
-        <tr>
+        <tr onclick="window.location='/partner/{{ partner.waarp_id }}'">
           <th scope="row">{{ partner.waarp_id }}</th>
           <td>{{ partner.hostid }}</td>
           <td>{{ partner.type }}</td>
