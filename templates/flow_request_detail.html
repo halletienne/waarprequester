@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">Flow Request #{{ flowrequest.request_id }}</h1>
+    <p>Flow Name: {{ flowrequest.name }} <br/>
+Active: {{ flowrequest.active }} <br/>
+Template: {{ flowrequest.template }} <br/>
+Origin: {{ flowrequest.origin }} <br/>
+Origin Dir: {{ flowrequest.originDir }} <br/>
+Filewatcher: {{ flowrequest.filewatcher }} <br/>
+Description: {{ flowrequest.description }} <br/>
+
+<a class="btn btn-primary" href="/delete_flow_request/{{ flowrequest.request_id }}" role="button">{% include 'includes/_trash.html' %} Delete</a>
+    </p>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  </div>
+{% endblock %}

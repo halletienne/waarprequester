@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">Flow Request</h1>
+    {% if flow_requested is defined %} 
+    <p class="lead">You requested:</p>
+    <p>
+    name: {{ flow_requested['name'] }} <br />
+    template: {{ flow_requested['template'] }} <br />
+    origin: {{ flow_requested['origin'] }} <br />
+    originDir: {{ flow_requested['originDir'] }} <br />
+    isActive: {{ flow_requested['isActive'] }} <br />
+    filewatcher: {{ flow_requested['filewatcher'] }} <br />
+    description: {{ flow_requested['description'] }} <br />
+    </p>
+    {% endif %}
+    <hr class="my-4">
+    <form method="post">
+      <div class="mb-3">
+        <label for="flowNameInput" class="form-label">Name</label>
+        <input type="text" class="form-control" id="flowNameInput" name="flowname">
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="activeFlow" name="isActive">
+        <label class="form-check-label" for="activeFlow">Active</label>
+      </div>
+      <div class="mb-3">
+        <label for="flowTemplateInput" class="form-label">Template</label>
+        <select name="flowtemplate" class="form-select form-select-sm" aria-label=".form-select-sm example">
+          <option selected>Select template</option>
+          {% for flow_template in flow_templates %}
+          <option value="{{ flow_template.waarp_id }}">{{ flow_template.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="originInput" class="form-label">Origin Partner</label>
+        <input list="originListOptions" placeholder="Search a partner" class="form-control" id="originInput" name="origin">
+	<datalist id="originListOptions">
+          {% for partner_requested in partners_requested %}
+	    <option value="{{ partner_requested.hostid }} (Partner Requested)">
+	  {% endfor %}
+          {% for partner in partners %}
+	    <option value="{{ partner.hostid }} (Partner Exists)">
+	  {% endfor %}
+	</datalist>
+      </div>
+      <div class="mb-3">
+        <label for="originDirInput" class="form-label">Origin Directory</label>
+        <input type="text" class="form-control" id="originDirInput" name="origindir">
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="filewatcherCheck" name="filewatcher">
+        <label class="form-check-label" for="filewatcherCheck">Filewatcher</label>
+      </div>
+      <div class="mb-3">
+        <label for="descriptionPartner" class="form-label">Description</label>
+        <textarea class="form-control" id="descriptionPartner" rows="3" name="description"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form> 
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>
+  </div>
+{% endblock %}
