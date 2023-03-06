@@ -51,9 +51,10 @@ class Destination(Base):
     flow_id = Column(Integer)
 
 
-    def __init__(self, hostid=1, path='', ):
+    def __init__(self, hostid=1, path='', flow_id=1):
         self.hostid = hostid
         self.path = path
+        self.flow_id = flow_id
 
     def __repr__(self):
         return f'<Destination {self.path!r}>'
