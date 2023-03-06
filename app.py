@@ -25,6 +25,8 @@ def hello_world():
     return render_template("index.html",app_data=app_data, flow_count=flow_count, partner_count=partner_count, flow_request_count=flow_request_count, partner_request_count=partner_request_count)
     
 
+#  Listing
+## Flows listing
 @app.route("/flows")
 def list_flows():
     flows = Flow.query.filter(Flow.waarp_id < 50 )
@@ -45,6 +47,7 @@ def list_flows():
                   } for flow in flows]
     return render_template("flow_list.html",app_data=app_data, flows=flow_results, partners=partner_linked)
 
+## Partners listing
 @app.route("/partners")
 def list_partners():
     partners = Partner.query.filter(Partner.waarp_id < 50 )
@@ -61,6 +64,55 @@ def list_partners():
     return render_template("partner_list.html",app_data=app_data, partners=partner_results)
 
 
+## Requests listing
+@app.route("/requests")
+def show_requests():
+    flow_requests = FlowRequest.query.all()
+
+    flow_request_results = [
+              {
+                  "request_id": flow.id,
+                  "name": flow.name,
+                  "active": flow.active,
+                  "template": flow.template,
+                  "origin": flow.origin,
+                  "originDir": flow.originDir,
+                  "description": flow.description,
+                  "filewatcher": flow.filewatcher
+                  } for flow in flow_requests]
+
+    partner_requests = PartnerRequest.query.all()
+
+    partner_request_results = [
+              {
+                  "request_id": partner.id,
+                  "site": partner.site,
+                  "type": partner.type,
+                  "isClient": partner.isClient,
+                  "isServer": partner.isServer,
+                  "description": partner.description,
+                  "hostid": partner.hostid,
+                  "hostidssl": partner.hostidssl
+                  } for partner in partner_requests]
+
+    existing_partners = Partner.query.all()
+    existing_partners_results = [
+              {
+                  "waarp_id": partner.waarp_id,
+                  "site": partner.site,
+                  "type": partner.type,
+                  "isClient": partner.isClient,
+                  "isServer": partner.isServer,
+                  "description": partner.description,
+                  "hostid": partner.hostid,
+                  "hostidssl": partner.hostidssl
+                  } for partner in existing_partners]
+
+    return render_template("requests_list.html", app_data=app_data, partner_requests=partner_request_results, flow_requests=flow_request_results, partners=existing_partners_results)
+
+
+# Creation Form
+## Flow Request Form
 @app.route("/flow_request_form", methods=['GET', 'POST'])
 def flow_request_creation():
     # Extract available templates
@@ -114,56 +166,7 @@ def flow_request_creation():
     else:
         return render_template("flow_request_creation.html", app_data=app_data, flow_templates=flow_templates_results, partners=partner_results, partners_requested=partner_requested_results)
 
-
-@app.route("/delete_flow_request/<int:flowrequest_id>")
-def delete_flow_request(flowrequest_id):
-    safe_id = escape(flowrequest_id)
-    db_session.delete(FlowRequest.query.filter(FlowRequest.id == safe_id).first())
-    db_session.commit()
-    return redirect(url_for('show_requests'))
-
-
-@app.route("/delete_partner_request/<int:partnerrequest_id>")
-def delete_partner_request(partnerrequest_id):
-    safe_id = escape(partnerrequest_id)
-    db_session.delete(PartnerRequest.query.filter(PartnerRequest.id == safe_id).first())
-    db_session.commit()
-    return redirect(url_for('show_requests'))
-
-
-@app.route("/flow_request_detail/<int:flowrequest_id>")
-def flow_request_detail(flowrequest_id):
-    safe_id = escape(flowrequest_id)
-    flowrequest_query = FlowRequest.query.filter(FlowRequest.id == safe_id).first()
-    flowrequest = {
-                  "request_id": flowrequest_query.id,
-                  "name": flowrequest_query.name,
-                  "active": flowrequest_query.active,
-                  "template": flowrequest_query.template,
-                  "origin": flowrequest_query.origin,
-                  "originDir": flowrequest_query.originDir,
-                  "description": flowrequest_query.description,
-                  "filewatcher": flowrequest_query.filewatcher
-                  }
-    return render_template("flow_request_detail.html", app_data=app_data, flowrequest=flowrequest)
-
-@app.route("/partner_request_detail/<int:partnerrequest_id>")
-def partner_request_detail(partnerrequest_id):
-    safe_id = escape(partnerrequest_id)
-    partnerrequest_query = PartnerRequest.query.filter(PartnerRequest.id == safe_id).first()
-    partnerrequest = {
-                  "request_id": partnerrequest_query.id,
-                  "type": partnerrequest_query.type,
-                  "site": partnerrequest_query.site,
-                  "hostid": partnerrequest_query.hostid,
-                  "hostidssl": partnerrequest_query.hostidssl,
-                  "description": partnerrequest_query.description,
-                  "isClient": partnerrequest_query.isClient,
-                  "isServer": partnerrequest_query.isServer
-                  }
-
-    return render_template("partner_request_detail.html", app_data=app_data, partnerrequest=partnerrequest)
-
+## Partner request form
 @app.route("/partner_request_form", methods=['GET', 'POST'])
 def partner_request_creation():
     sites = Site.query.all()
@@ -199,51 +202,8 @@ def partner_request_creation():
     else:
         return render_template("partner_request_creation.html", app_data=app_data,site_results=site_results)
 
-@app.route("/requests")
-def show_requests():
-    flow_requests = FlowRequest.query.all()
-
-    flow_request_results = [
-              {
-                  "request_id": flow.id,
-                  "name": flow.name,
-                  "active": flow.active,
-                  "template": flow.template,
-                  "origin": flow.origin,
-                  "originDir": flow.originDir,
-                  "description": flow.description,
-                  "filewatcher": flow.filewatcher
-                  } for flow in flow_requests]
-
-    partner_requests = PartnerRequest.query.all()
-
-    partner_request_results = [
-              {
-                  "request_id": partner.id,
-                  "site": partner.site,
-                  "type": partner.type,
-                  "isClient": partner.isClient,
-                  "isServer": partner.isServer,
-                  "description": partner.description,
-                  "hostid": partner.hostid,
-                  "hostidssl": partner.hostidssl
-                  } for partner in partner_requests]
-
-    existing_partners = Partner.query.all()
-    existing_partners_results = [
-              {
-                  "waarp_id": partner.waarp_id,
-                  "site": partner.site,
-                  "type": partner.type,
-                  "isClient": partner.isClient,
-                  "isServer": partner.isServer,
-                  "description": partner.description,
-                  "hostid": partner.hostid,
-                  "hostidssl": partner.hostidssl
-                  } for partner in existing_partners]
-
-    return render_template("requests_list.html", app_data=app_data, partner_requests=partner_request_results, flow_requests=flow_request_results, partners=existing_partners_results)
-
+# Detail
+## Partner
 @app.route("/partner/<int:waarp_id>")
 def show_partner(waarp_id):
     safe_id = escape(waarp_id)
@@ -264,10 +224,72 @@ def show_partner(waarp_id):
                   } for flow in flows]
     return render_template('partner_detail.html', app_data=app_data, partner=partner, flows=flow_results)
 
+# Show Request detail
+## Flow request detail
+@app.route("/flow_request_detail/<int:flowrequest_id>")
+def flow_request_detail(flowrequest_id):
+    safe_id = escape(flowrequest_id)
+    flowrequest_query = FlowRequest.query.filter(FlowRequest.id == safe_id).first()
+    flowrequest = {
+                  "request_id": flowrequest_query.id,
+                  "name": flowrequest_query.name,
+                  "active": flowrequest_query.active,
+                  "template": flowrequest_query.template,
+                  "origin": flowrequest_query.origin,
+                  "originDir": flowrequest_query.originDir,
+                  "description": flowrequest_query.description,
+                  "filewatcher": flowrequest_query.filewatcher
+                  }
+    return render_template("flow_request_detail.html", app_data=app_data, flowrequest=flowrequest)
+
+
+## Flow request detail
+@app.route("/partner_request_detail/<int:partnerrequest_id>")
+def partner_request_detail(partnerrequest_id):
+    safe_id = escape(partnerrequest_id)
+    partnerrequest_query = PartnerRequest.query.filter(PartnerRequest.id == safe_id).first()
+    partnerrequest = {
+                  "request_id": partnerrequest_query.id,
+                  "type": partnerrequest_query.type,
+                  "site": partnerrequest_query.site,
+                  "hostid": partnerrequest_query.hostid,
+                  "hostidssl": partnerrequest_query.hostidssl,
+                  "description": partnerrequest_query.description,
+                  "isClient": partnerrequest_query.isClient,
+                  "isServer": partnerrequest_query.isServer
+                  }
+
+    return render_template("partner_request_detail.html", app_data=app_data, partnerrequest=partnerrequest)
+
+
+# Requests deletion
+## Flow requests deletion
+@app.route("/delete_flow_request/<int:flowrequest_id>")
+def delete_flow_request(flowrequest_id):
+    safe_id = escape(flowrequest_id)
+    db_session.delete(FlowRequest.query.filter(FlowRequest.id == safe_id).first())
+    db_session.commit()
+    return redirect(url_for('show_requests'))
+
+
+## Partner requests deletion
+@app.route("/delete_partner_request/<int:partnerrequest_id>")
+def delete_partner_request(partnerrequest_id):
+    safe_id = escape(partnerrequest_id)
+    db_session.delete(PartnerRequest.query.filter(PartnerRequest.id == safe_id).first())
+    db_session.commit()
+    return redirect(url_for('show_requests'))
+
+
+
+
+
+
     
 @app.route("/info")
 def show_info():
     return render_template('example.html', app_data=app_data)
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
