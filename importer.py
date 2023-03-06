@@ -9,14 +9,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from models import Flow, Partner, Site, FlowTemplate
 import logging
 
 
 
 logging.getLogger().setLevel(logging.ERROR)
 
-engine = create_engine('sqlite:////tmp/test_new.db')
+engine = create_engine('sqlite:////tmp/test_newmodel.db')
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -28,6 +27,7 @@ def init_db():
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
     import models
+    print("DB Initialisation")
     Base.metadata.create_all(bind=engine)
 
 
@@ -63,6 +63,7 @@ def waarp_connect():
 
 
 def populate_db(db_session, waarp):
+    from models import Flow, Partner, Site, FlowTemplate
     ## This inventory need higher privilege
     #waarp.link_inventory()
     waarp.flow_inventory()
@@ -101,7 +102,7 @@ def populate_db(db_session, waarp):
         s = Site(site.id, site.name, site.description)
         db_session.add(s)
     db_session.commit()
-    ##waarp.template_inventory()
+    waarp.template_inventory()
     for template_name in waarp.templates:
         print('s name is '+str(type(template_name)))
         print(waarp.templates[template_name])
