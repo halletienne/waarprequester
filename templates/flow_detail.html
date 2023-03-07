@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">Flow</h1>
+    <hr class="my-4">
+    <p class="lead">Flow Detail</p>
+    <p>Name: {{ flow.name }}</p>
+    <p>Template: [{{ flow.template }}] {{ template_name }}</p>
+    <p>Origin: <a href="{{ url_for('show_partner', waarp_id=flow.origin) }}">[{{ flow.origin }}] {{ origin_name }}</a></p>
+    <p>Origin Directory: {{ flow.origindir }}</p>
+    <p>FileWatcher: {{ flow.filewatcher }}</p>
+    <hr class="my-4">
+    <p class="lead">Flow Destinations</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">hostid</th>
+          <th scope="col">Path</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for destination in destinations %}
+	<tr >
+          <td>{{ destination.hostid }}</td>
+          <td>{{ destination.path }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <a class="btn btn-primary btn-lg" href="/info" role="button">Informations</a>
+  </div>
+{% endblock %}
