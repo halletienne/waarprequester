@@ -9,8 +9,13 @@ Origin: {{ flowrequest.origin }} <br/>
 Origin Dir: {{ flowrequest.originDir }} <br/>
 Filewatcher: {{ flowrequest.filewatcher }} <br/>
 Description: {{ flowrequest.description }} <br/>
+Status: {{ flowrequest.status }} <br/>
 
-<a class="btn btn-primary" href="/delete_flow_request/{{ flowrequest.request_id }}" role="button">{% include 'includes/_trash.html' %} Delete</a>
+<div class="btn-group" role="group">
+  <a class="btn btn-success" href="{{flowrequest.request_id }}" role="button">{% include 'includes/_checkmark.html' %} Validate</a>
+  <a class="btn btn-outline-secondary" href="{{flowrequest.request_id }}" role="button">{% include 'includes/_pencil.html' %} Edit</a>
+  <a class="btn btn-danger" href="{{ url_for('delete_flow_request', flowrequest_id=flowrequest.request_id) }}" role="button">{% include 'includes/_trash.html' %} Delete</a>
+</div>
     </p>
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
