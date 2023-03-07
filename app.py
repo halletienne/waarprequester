@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from database import db_session
 from markupsafe import escape
-from models import Flow, Partner, Site, FlowTemplate, PartnerRequest, FlowRequest, FlowTemplate
+from models import Flow, Partner, Site, FlowTemplate, PartnerRequest, FlowRequest, Destination
 DEVELOPMENT_ENV = True
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def hello_world():
 ## Flows listing
 @app.route("/flows")
 def list_flows():
-    flows = Flow.query.filter(Flow.waarp_id < 50 )
+    flows = Flow.query.filter(Flow.waarp_id < 100 )
     partners = Partner.query.all()
     partner_linked = [
         {
@@ -50,7 +50,7 @@ def list_flows():
 ## Partners listing
 @app.route("/partners")
 def list_partners():
-    partners = Partner.query.filter(Partner.waarp_id < 50 )
+    partners = Partner.query.filter(Partner.waarp_id < 100 )
     partner_results = [
               {
                   "waarp_id": partner.waarp_id,
@@ -214,7 +214,7 @@ def show_partner(waarp_id):
        "type": partner_query.type
        }
     flows = Flow.query.filter(Flow.origin == safe_id )
-    flow_results = [
+    flow_out_results = [
               {
                   "waarp_id": flow.waarp_id,
                   "name": flow.name,
@@ -222,7 +222,43 @@ def show_partner(waarp_id):
                   "active": flow.active,
                   "origin": flow.origin
                   } for flow in flows]
-    return render_template('partner_detail.html', app_data=app_data, partner=partner, flows=flow_results)
+    # Query Site name
+    site = Site.query.filter(Site.waarp_id == partner['site']).first().name
+
+    flows_in = Destination.query.filter(Destination.hostid == safe_id )
+    flow_in_results = [
+              {
+                  "path": flow.path,
+                  "flow_id": flow.flow_id,
+                  } for flow in flows_in]
+    return render_template('partner_detail.html', app_data=app_data, partner=partner, flows_out=flow_out_results, flows_in=flow_in_results, site_name=site)
+
+@app.route("/flow/<int:waarp_id>")
+def show_flow(waarp_id):
+    safe_id = escape(waarp_id)
+    flow_query = Flow.query.filter(Flow.waarp_id == safe_id).first()
+    flow = {
+       "name": flow_query.name,
+       "template": flow_query.template,
+       "origin": flow_query.origin,
+       "origindir": flow_query.origindir,
+       "filewatcher": flow_query.filewatcher
+       }
+
+    # Query Origin Name
+    origin_name = Partner.query.filter(Partner.waarp_id == flow['origin']).first().hostid
+    
+    # Query Template Name
+    template_name = FlowTemplate.query.filter(FlowTemplate.waarp_id == flow['template']).first().name
+
+    destinations_query = Destination.query.filter(Destination.flow_id == safe_id)
+    destinations_results = [
+              {
+                  "hostid": destination.hostid,
+                  "path": destination.path
+                  } for destination in destinations_query]
+
+    return render_template('flow_detail.html', app_data=app_data, flow=flow, destinations=destinations_results, origin_name=origin_name, template_name=template_name)
 
 # Show Request detail
 ## Flow request detail
