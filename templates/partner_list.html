@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         {% for partner in partners %}
-        <tr onclick="window.location='/partner/{{ partner.waarp_id }}'">
+	<tr onclick="window.location='{{ url_for('show_partner', waarp_id=partner.waarp_id) }}'">
           <th scope="row">{{ partner.waarp_id }}</th>
           <td>{{ partner.hostid }}</td>
           <td>{{ partner.type }}</td>
