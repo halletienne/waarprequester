@@ -145,7 +145,7 @@ def flow_request_creation():
             'flowname': request.form['flowname'],
             'template': request.form['flowtemplate'],
             'description': request.form['description'],
-            'origin': request.form['origin'],
+            'origin': request.form['origin'].split('(')[0].strip(),
             'originDir': request.form['origindir'],
             }
         if request.form.get('filewatcher'):
@@ -177,12 +177,13 @@ def partner_request_creation():
                   "description": site.description
                   } for site in sites]
     if request.method == 'POST': 
+        #print("%s %s %s %s"%(request.form['site'], request.form['type'], request.form['description'], request.form['hostid']))
         partner_requested={
             'site': request.form['site'],
             'type': request.form['type'],
             'description': request.form['description'],
             'hostid': request.form['hostid'],
-            'hostidssl': request.form['hostidssl']
+            'hostidssl': request.form['hostid']+'-ssl'
             }
         if request.form.get('isClient'):
             partner_requested['isClient'] = True
@@ -211,7 +212,8 @@ def show_partner(waarp_id):
     partner = {
        "hostid": partner_query.hostid,
        "site": partner_query.site,
-       "type": partner_query.type
+       "type": partner_query.type,
+       "ip": partner_query.ip
        }
     flows = Flow.query.filter(Flow.origin == safe_id )
     flow_out_results = [
@@ -274,12 +276,13 @@ def flow_request_detail(flowrequest_id):
                   "origin": flowrequest_query.origin,
                   "originDir": flowrequest_query.originDir,
                   "description": flowrequest_query.description,
-                  "filewatcher": flowrequest_query.filewatcher
+                  "filewatcher": flowrequest_query.filewatcher,
+                  "status": flowrequest_query.status
                   }
     return render_template("flow_request_detail.html", app_data=app_data, flowrequest=flowrequest)
 
 
-## Flow request detail
+## Partner request detail
 @app.route("/partner_request_detail/<int:partnerrequest_id>")
 def partner_request_detail(partnerrequest_id):
     safe_id = escape(partnerrequest_id)
@@ -292,7 +295,8 @@ def partner_request_detail(partnerrequest_id):
                   "hostidssl": partnerrequest_query.hostidssl,
                   "description": partnerrequest_query.description,
                   "isClient": partnerrequest_query.isClient,
-                  "isServer": partnerrequest_query.isServer
+                  "isServer": partnerrequest_query.isServer,
+                  "status": partnerrequest_query.status
                   }
 
     return render_template("partner_request_detail.html", app_data=app_data, partnerrequest=partnerrequest)
