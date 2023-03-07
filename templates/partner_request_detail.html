@@ -9,6 +9,12 @@ hostidssl: {{ partnerrequest.hostidssl }} <br/>
 isClient: {{ partnerrequest.isClient }} <br/>
 isServer: {{ partnerrequest.isServer }} <br/>
 Description: {{ partnerrequest.description }} <br/>
+Status: {{ partnerrequest.status }} <br/>
+<div class="btn-group" role="group">
+  <a class="btn btn-success" href="{{partnerrequest.request_id }}" role="button">{% include 'includes/_checkmark.html' %} Validate</a>
+  <a class="btn btn-outline-secondary" href="{{partnerrequest.request_id }}" role="button">{% include 'includes/_pencil.html' %} Edit</a>
+  <a class="btn btn-danger" href="{{ url_for('delete_partner_request', partnerrequest_id=partnerrequest.request_id) }}" role="button">{% include 'includes/_trash.html' %} Delete</a>
+</div>
     </p>
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
