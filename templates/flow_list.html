@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         {% for flow in flows %}
-        <tr>
+	<tr onclick="window.location='{{ url_for('show_flow', waarp_id=flow.waarp_id) }}'">
           <th scope="row">{{ flow.waarp_id }}</th>
           <td>{{ flow.name }}</td>
           <td>{% if flow.active %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
