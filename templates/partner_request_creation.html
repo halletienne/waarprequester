@@ -18,12 +18,16 @@
     <hr class="my-4">
     <form action="/partner_request_form" method="post">
       <div class="mb-3">
-        <label for="hostidInput" class="form-label">hostId</label>
+        <label for="hostidInput" class="form-label">Name</label>
         <input type="text" class="form-control" name="hostid" id="hostidInput">
       </div>
       <div class="mb-3">
-        <label for="hostidsslInput" class="form-label">hostIdSSL</label>
-        <input type="text" class="form-control" name="hostidssl" id="hostidsslInput">
+        <label for="hostidsslInput" class="form-label">Name (SSL)</label>
+        <input type="text" class="form-control" name="hostidssl" id="hostidsslInput" disabled readonly >
+      </div>
+      <div class="mb-3">
+        <label for="addressInput" class="form-label">Address</label>
+        <input type="text" class="form-control" name="address" id="addressInput">
       </div>
       <div class="mb-3">
         <label for="siteInput" class="form-label">Site</label>
@@ -42,13 +46,13 @@
           <option value="sftp">SFTP</option>
         </select>
       </div>
-      <div class="mb-3 form-check">
+      <div class="mb-3 form-check form-switch">
         <input type="checkbox" class="form-check-input" id="isClientCheck" name="isClient">
-        <label class="form-check-label" for="isClientCheck">isClient</label>
+        <label class="form-check-label" for="isClientCheck">Client  {% include 'includes/_arrow-down.html' %}</label>
       </div>
-      <div class="mb-3 form-check">
+      <div class="mb-3 form-check form-switch">
         <input type="checkbox" class="form-check-input" id="isServerCheck" name="isServer">
-        <label class="form-check-label" for="isServerCheck">isServer</label>
+        <label class="form-check-label" for="isServerCheck">Server {% include 'includes/_arrow-up.html' %}</label>
       </div>
       <div class="mb-3">
         <label for="descriptionPartner" class="form-label">Description</label>
