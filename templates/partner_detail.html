@@ -6,10 +6,10 @@
     <hr class="my-4">
     <p class="lead">Partner Detail</p>
     <p>Hostname: {{ partner.hostid }}</p>
-    <p>Site: {{ partner.site }}</p>
+    <p>Site: [{{ partner.site }}] {{ site_name }}</p>
     <p>Type: {{ partner.type }}</p>
     <hr class="my-4">
-    <p class="lead">Flow coming from this host</p>
+    <p class="lead">Flow coming from this host {% include 'includes/_arrow-up.html' %}</p>
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -20,12 +20,28 @@
         </tr>
       </thead>
       <tbody>
-        {% for flow in flows %}
-        <tr>
+        {% for flow in flows_out %}
+	<tr onclick="window.location='{{ url_for("show_flow", waarp_id=flow.waarp_id) }}'">
           <th scope="row">{{ flow.waarp_id }}</th>
           <td>{{ flow.name }}</td>
           <td>{% if flow.active %}{% include 'includes/_checkmark.html' %}{% else %}{% include 'includes/_xcheck.html' %}{% endif %}</td>
           <td>{{ flow.description }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <hr class="my-4">
+    <p class="lead">Flow coming to this host {% include 'includes/_arrow-down.html' %}</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Path</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in flows_in %}
+	<tr onclick="window.location='{{ url_for("show_flow", waarp_id=flow.flow_id) }}'">
+          <td>{{ flow.path }}</td>
         </tr>
       {% endfor %}
       </tbody>
