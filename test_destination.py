@@ -92,7 +92,7 @@ def populate_db(db_session, waarp):
         #print("%s %s %s %s %s %s %s "%(partner.name, partner['active'], partner['template'], partner['origin'], partner['originDir'], partner['description'], partner['filewatcher']))
         #f = Flow(flow.name, flow['active'] )
         #f = Flow()
-        p = Partner(partner.id, partner.site, partner.type, partner.isClient, partner.isServer, partner.description, partner.hostid, partner.hostidssl)
+        p = Partner(waarp_id=partner.id, site=partner.site, partner_type=partner.type, isClient=partner.isClient, isServer=partner.isServer, description=partner.description, hostid=partner.hostid, hostidssl=partner.hostidssl, ip=partner.ip)
         db_session.add(p)
     db_session.commit()
 
