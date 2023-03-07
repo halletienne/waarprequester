@@ -12,9 +12,10 @@ class Partner(Base):
     description = Column(String(20))
     hostid = Column(String(30))
     hostidssl = Column(String(30))
+    ip = Column(String(30))
 
 
-    def __init__(self, waarp_id, site=1, partner_type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl=''):
+    def __init__(self, waarp_id, site=1, partner_type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl='', ip=''):
         self.waarp_id = waarp_id
         self.site = site
         self.type = partner_type
@@ -23,6 +24,7 @@ class Partner(Base):
         self.description = description
         self.hostid = hostid
         self.hostidssl = hostidssl
+        self.ip = ip
 
     def __repr__(self):
         return f'<Partner {self.hostid!r}>'
@@ -112,9 +114,10 @@ class PartnerRequest(Base):
     additionalInformation = Column(String(400))
     hostid = Column(String(30))
     hostidssl = Column(String(30))
+    ip = Column(String(30))
 
 
-    def __init__(self, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl='', status='created', additionalInformation='', ):
+    def __init__(self, site=1, type='r66', isClient=True, isServer=True, description='', hostid='', hostidssl='', status='created', additionalInformation='', ip=''):
         self.site = site
         self.type = type
         self.isClient = isClient
@@ -123,6 +126,7 @@ class PartnerRequest(Base):
         self.hostid = hostid
         self.hostidssl = hostidssl
         self.status = status
+        self.ip = ip
         self.additionalInformation = additionalInformation
 
     def __repr__(self):
